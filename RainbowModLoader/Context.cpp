@@ -1,6 +1,7 @@
 #include "Context.h"
+#include "SigScan.h"
 
-HOOK(void*, __fastcall, InitOsWindows, 0x1400FDD00, void* A1, void* A2)
+HOOK(void*, __fastcall, InitOsWindows, sigInitOsWindows(), void* A1, void* A2)
 {
     initMods();
     initWorkFolder();

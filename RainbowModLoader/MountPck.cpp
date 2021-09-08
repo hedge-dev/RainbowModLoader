@@ -1,10 +1,11 @@
 #include "Context.h"
 #include "Types.h"
 #include "Utilities.h"
+#include "SigScan.h"
 
 std::vector<std::string> modDirectoryPaths;
 
-HOOK(bool, __fastcall, LoadPckFiles, 0x1402BF6C0, ProjectSettings* This, const String& p_path)
+HOOK(bool, __fastcall, LoadPckFiles, sigLoadPckFiles(), ProjectSettings* This, const String& p_path)
 {
     const bool result = originalLoadPckFiles(This, p_path);
 

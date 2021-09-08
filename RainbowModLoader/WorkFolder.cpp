@@ -4,12 +4,13 @@
 
 std::vector<std::string> workDirectoryPaths;
 
-HOOK(FileAccess*, __fastcall, FileAccessOpen, 0x1402B9AD0, const String& p_path, int p_mode_flags, Error* p_error)
+HOOK(FileAccess*, __fastcall, FileAccessOpen, sigFileAccessOpen2(), const String& p_path, int p_mode_flags, Error* p_error)
 {
     if (!beginsWith(&p_path, "res://"))
         return originalFileAccessOpen(p_path, p_mode_flags, p_error);
 
-    FileAccess* fileAccess = createFileAccessWindows();
+    FileAccess* fileAccess = (FileAccess*)memoryAllocStatic(64);
+    fileAccessWindowsCtor(fileAccess);
 
     for (auto& workDirectoryPath : workDirectoryPaths)
     {
