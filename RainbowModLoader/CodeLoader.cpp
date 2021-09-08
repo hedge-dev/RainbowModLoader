@@ -7,14 +7,14 @@ typedef void DllEvent();
 std::vector<std::wstring> dllFilePaths;
 std::vector<DllEvent*> onFrameEvents;
 
-HOOK(bool, __fastcall, Update, sigUpdate(), void* This)
+HOOK(HRESULT, __fastcall, Present, sigPresent(), void* This)
 {
     for (auto& dllEvent : onFrameEvents)
         dllEvent();
 
     CommonLoader::CommonLoader::RaiseUpdates();
 
-    return originalUpdate(This);
+    return originalPresent(This);
 }
 
 void initCodeLoader()
@@ -49,5 +49,5 @@ void initCodeLoader()
     for (auto& dllEvent : postInitEvents)
         dllEvent();
 
-    INSTALL_HOOK(Update);
+    INSTALL_HOOK(Present);
 }
