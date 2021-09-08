@@ -31,7 +31,7 @@ HOOK(FileAccess*, __fastcall, FileAccessOpen, sigFileAccessOpen2(), const String
     return originalFileAccessOpen(p_path, p_mode_flags, p_error);
 }
 
-void initWorkFolder()
+void initWorkLoader()
 {
     processDirectoryPaths(workDirectoryPaths, !reverseLoadOrder);
 

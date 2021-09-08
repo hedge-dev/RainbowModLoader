@@ -3,6 +3,7 @@
 extern void* sigInitOsWindows(); // 0x1400FDD00
 extern void* sigLoadPckFiles(); // 0x1402BF6C0
 extern void* sigFileAccessOpen2(); // 0x1402B9AD0
+extern void* sigUpdate(); // 0x14021C4C0
 
 extern void* sigMemoryAllocStatic(); // 0x140114D60
 extern void* sigMemoryFreeStaticUint8(); // 0x140114E90

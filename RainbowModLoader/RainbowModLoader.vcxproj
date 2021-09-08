@@ -99,6 +99,7 @@
     <ClInclude Include="Dependencies\Helpers.h" />
     <ClInclude Include="Dependencies\INIReader.h" />
     <ClInclude Include="Pch.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SigScan.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Utilities.h" />
@@ -106,14 +107,15 @@
   <ItemGroup>
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="DllMain.cpp" />
-    <ClCompile Include="Mods.cpp" />
-    <ClCompile Include="MountPck.cpp" />
+    <ClCompile Include="CodeLoader.cpp" />
+    <ClCompile Include="ModLoader.cpp" />
+    <ClCompile Include="PckLoader.cpp" />
     <ClCompile Include="Pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SigScan.cpp" />
-    <ClCompile Include="WorkFolder.cpp" />
+    <ClCompile Include="WorkLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\Detours\lib\x64\detours.lib" />
@@ -121,6 +123,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\Detours\lib\x64\detours.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Dependencies\CommonLoader\CommonLoader\CommonLoader.vcxproj">
+      <Project>{e6278a28-e93a-42a9-ae64-e7a5e8d39d7a}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

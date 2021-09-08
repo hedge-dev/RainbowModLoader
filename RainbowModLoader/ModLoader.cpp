@@ -1,5 +1,5 @@
 #include "Context.h"
-#include "Types.h"
+#include "Utilities.h"
 
 bool reverseLoadOrder;
 
@@ -13,11 +13,7 @@ void loadMod(const std::string& filePath)
     if (mod.ParseError() != 0)
         return;
 
-    std::string directoryPath;
-
-    const size_t index = filePath.find_last_of("\\/");
-    if (index != std::string::npos)
-        directoryPath = filePath.substr(0, index + 1);
+    const std::string directoryPath = getDirectoryPath(filePath);
 
     const long includeDirCount = mod.GetInteger("Main", "IncludeDirCount", 0);
 
@@ -33,6 +29,11 @@ void loadMod(const std::string& filePath)
         workDirectoryPaths.push_back(fullIncludeDir + "/work");
         modDirectoryPaths.push_back(fullIncludeDir);
     }
+
+    const std::string dllFilePath = directoryPath + mod.GetString("Main", "DLLFile", std::string());
+
+    if (!dllFilePath.empty())
+        dllFilePaths.push_back(convertMultiByteToWideChar(dllFilePath));
 }
 
 void loadModsDatabase(const std::string& filePath)
@@ -58,7 +59,7 @@ void loadModsDatabase(const std::string& filePath)
     }
 }
 
-void initMods()
+void initModLoader()
 {
     const INIReader main("cpkredir.ini");
 
@@ -69,4 +70,7 @@ void initMods()
     loadModsDatabase(modsDbFilePath);
 
     workDirectoryPaths.emplace_back("../content/acorn/work");
+
+    CommonLoader::CommonLoader::InitializeAssemblyLoader((getDirectoryPath(modsDbFilePath) + "Codes.dll").c_str());
+    CommonLoader::CommonLoader::RaiseInitializers();
 }

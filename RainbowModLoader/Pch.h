@@ -10,5 +10,6 @@
 
 #include <unordered_map>
 
+#include <CommonLoader/CommonLoader/CommonLoader.h>
 #include <Helpers.h>
 #include <INIReader.h>

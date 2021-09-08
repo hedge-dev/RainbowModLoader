@@ -21,15 +21,17 @@
     </ClInclude>
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="SigScan.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="Pch.cpp" />
-    <ClCompile Include="WorkFolder.cpp" />
+    <ClCompile Include="WorkLoader.cpp" />
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="MountPck.cpp" />
-    <ClCompile Include="Mods.cpp" />
+    <ClCompile Include="PckLoader.cpp" />
+    <ClCompile Include="ModLoader.cpp" />
     <ClCompile Include="SigScan.cpp" />
+    <ClCompile Include="CodeLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -60,5 +62,8 @@
     <None Include="Dependencies\Detours\lib\x64\detours.pdb">
       <Filter>Dependencies\Detours\lib\x64</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
 </Project>

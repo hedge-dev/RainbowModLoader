@@ -20,7 +20,7 @@ HOOK(bool, __fastcall, LoadPckFiles, sigLoadPckFiles(), ProjectSettings* This, c
     return result;
 }
 
-void initMountPck()
+void initPckLoader()
 {
     processDirectoryPaths(modDirectoryPaths, reverseLoadOrder);
 
