@@ -28,12 +28,13 @@ void loadMod(const std::string& filePath)
 
         workDirectoryPaths.push_back(fullIncludeDir + "/work");
         modDirectoryPaths.push_back(fullIncludeDir);
+        cpkDirectoryPaths.push_back(fullIncludeDir + "/PCCriPak");
     }
 
-    const std::string dllFilePath = directoryPath + mod.GetString("Main", "DLLFile", std::string());
+    const std::string dllFilePath = mod.GetString("Main", "DLLFile", std::string());
 
     if (!dllFilePath.empty())
-        dllFilePaths.push_back(convertMultiByteToWideChar(dllFilePath));
+        dllFilePaths.push_back(convertMultiByteToWideChar(directoryPath + dllFilePath));
 }
 
 void loadModsDatabase(const std::string& filePath)

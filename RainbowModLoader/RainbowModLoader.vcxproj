@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Context.cpp" />
+    <ClCompile Include="CpkRedirector.cpp" />
     <ClCompile Include="DllMain.cpp" />
     <ClCompile Include="CodeLoader.cpp" />
     <ClCompile Include="ModLoader.cpp" />
