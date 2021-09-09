@@ -67,6 +67,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>detours.lib;syelog.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\Detours\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4099 /ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -82,6 +83,7 @@
       <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>Pch.h</ForcedIncludeFiles>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -89,6 +91,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>detours.lib;syelog.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\Detours\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4099 /ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
