@@ -23,12 +23,23 @@ void initCodeLoader()
 
     if (!dllFilePaths.empty())
     {
-        LOG("DLL:")
-
         std::vector<DllEvent*> postInitEvents;
+
+        WCHAR currentDirectory[0x400];
+        WCHAR dllDirectory[0x400];
+
+        GetCurrentDirectoryW(_countof(currentDirectory), currentDirectory);
+        GetDllDirectoryW(_countof(dllDirectory), dllDirectory);
+
+        LOG("DLL:")
 
         for (auto& dllFilePath : dllFilePaths)
         {
+            const std::wstring directoryPath = std::filesystem::path(dllFilePath).parent_path().wstring();
+
+            SetCurrentDirectoryW(directoryPath.c_str());
+            SetDllDirectoryW(directoryPath.c_str());
+
             const HMODULE module = LoadLibraryW(dllFilePath.c_str());
 
             if (!module)
@@ -48,7 +59,15 @@ void initCodeLoader()
                 continue;
             }
 
-            LOG(" - %ls", dllFilePath.c_str())
+            if (enableDebugConsole)
+            {
+                std::wstring relativePath = std::filesystem::relative(dllFilePath, currentDirectory).wstring();
+
+                if (relativePath.size() > dllFilePath.size())
+                    relativePath = dllFilePath;
+
+                LOG(" - %ls", relativePath.c_str())
+            }
 
             const FARPROC initEvent = GetProcAddress(module, "Init");
 
@@ -68,6 +87,9 @@ void initCodeLoader()
 
         for (auto& dllEvent : postInitEvents)
             dllEvent();
+
+        SetCurrentDirectoryW(currentDirectory);
+        SetDllDirectoryW(dllDirectory);
     }
 
     INSTALL_HOOK(Present);

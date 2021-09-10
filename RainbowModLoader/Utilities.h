@@ -25,15 +25,12 @@ inline void processFilePaths(std::vector<std::wstring>& filePaths, const bool re
 {
     std::vector<std::wstring> newFilePaths;
 
-    const std::filesystem::path currentPath = std::filesystem::current_path();
-
     for (auto& filePath : filePaths)
     {
         if (!std::filesystem::is_regular_file(filePath))
             continue;
 
-        const std::wstring relativePath = std::filesystem::relative(filePath, std::filesystem::current_path()).wstring();
-        newFilePaths.push_back(relativePath.size() < filePath.size() ? relativePath : filePath);
+        newFilePaths.push_back(std::filesystem::absolute(filePath).wstring());
     }
 
     if (reverse)
