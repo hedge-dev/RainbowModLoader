@@ -9,6 +9,7 @@
 #include <cstdio>
 
 #include <unordered_map>
+#include <filesystem>
 
 #include <CommonLoader/CommonLoader/CommonLoader.h>
 #include <Helpers.h>

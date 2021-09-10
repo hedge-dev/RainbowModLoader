@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <filesystem>
 
 inline void processDirectoryPaths(std::vector<std::string>& directoryPaths, const bool reverse)
 {
