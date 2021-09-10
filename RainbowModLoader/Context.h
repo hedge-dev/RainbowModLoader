@@ -1,5 +1,15 @@
 ﻿#pragma once
 
+#define LOG(x, ...) \
+    { \
+        if (enableDebugConsole) \
+        { \
+            printf("[RML] "##x##"\n", __VA_ARGS__); \
+        } \
+    }
+
+extern bool enableDebugConsole;
+
 extern bool reverseLoadOrder;
 extern std::vector<std::string> workDirectoryPaths;
 extern std::vector<std::string> modDirectoryPaths;

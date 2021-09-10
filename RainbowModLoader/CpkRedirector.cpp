@@ -9,8 +9,12 @@ std::vector<std::string> cpkDirectoryPaths;
 
 HOOK(int, __fastcall, CriFsBindCpkInternal, sigCriFsBindCpkInternal(), void* bndrhn, void* srcbndrhn, const char* path, void* work, int worksize, int* bndrid, int flags)
 {
+    LOG("CPK:")
+
     for (size_t i = 0; i < cpkDirectoryPaths.size(); i++)
     {
+        LOG(" - %s", cpkDirectoryPaths[i].c_str())
+
         criFsBindDirectory(bndrhn, srcbndrhn, cpkDirectoryPaths[i].c_str(), operator new(88), 88, bndrid);
         criFsSetPriority(*bndrid, (int)(1 + i));
     }

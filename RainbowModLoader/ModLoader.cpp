@@ -1,6 +1,7 @@
 #include "Context.h"
 #include "Utilities.h"
 
+bool enableDebugConsole;
 bool reverseLoadOrder;
 
 void loadMod(const std::string& filePath)
@@ -11,7 +12,12 @@ void loadMod(const std::string& filePath)
     const INIReader mod(filePath);
 
     if (mod.ParseError() != 0)
+    {
+        LOG(" - Failed to load \"%s\"", filePath.c_str())
         return;
+    }
+
+    LOG(" - %s", mod.GetString("Desc", "Title", std::string()).c_str())
 
     const std::string directoryPath = getDirectoryPath(filePath);
 
@@ -44,6 +50,20 @@ void loadModsDatabase(const std::string& filePath)
 
     const INIReader modsDatabase(filePath);
 
+    if (enableDebugConsole)
+    {
+        std::string relativePath = std::filesystem::relative(filePath, std::filesystem::current_path()).string();
+
+        if (relativePath.size() > filePath.size())
+            relativePath = filePath;
+
+        if (modsDatabase.ParseError() != 0)
+            LOG("Failed to load \"%s\"", filePath.c_str())
+
+        else
+            LOG("ModsDB: %s", relativePath.c_str())
+    }
+
     reverseLoadOrder = modsDatabase.GetBoolean("Main", "ReverseLoadOrder", true);
 
     const long activeModCount = modsDatabase.GetInteger("Main", "ActiveModCount", 0);
@@ -66,6 +86,16 @@ void initModLoader()
 
     if (!main.GetBoolean("CPKREDIR", "Enabled", true))
         return;
+
+    enableDebugConsole = main.GetString("CPKREDIR", "LogType", std::string()) == "console";
+
+    if (enableDebugConsole)
+    {
+        if (!GetConsoleWindow())
+            AllocConsole();
+
+        freopen("CONOUT$", "w", stdout);
+    }
 
     const std::string modsDbFilePath = main.GetString("CPKREDIR", "ModsDbIni", "mods/ModsDb.ini");
     loadModsDatabase(modsDbFilePath);

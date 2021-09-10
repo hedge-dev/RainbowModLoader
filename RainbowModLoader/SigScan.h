@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+extern bool sigValid;
+
 extern void* sigInitOsWindows(); // 0x1400FDD00
 extern void* sigLoadPckFiles(); // 0x1402BF6C0
 extern void* sigFileAccessOpen2(); // 0x1402B9AD0

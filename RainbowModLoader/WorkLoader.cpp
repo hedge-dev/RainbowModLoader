@@ -20,6 +20,8 @@ HOOK(FileAccess*, __fastcall, FileAccessOpen, sigFileAccessOpen2(), const String
         if (fileAccessOpen(fileAccess, redirectedPath, p_mode_flags) != 0) // Returns 0 if file was found
             continue;
 
+        LOG("%ls -> %ls", p_path.cowData.ptr, redirectedPath.cowData.ptr);
+
         if (p_error) 
             *p_error = 0;
 
@@ -35,6 +37,12 @@ void initWorkLoader()
 {
     processDirectoryPaths(workDirectoryPaths, !reverseLoadOrder);
 
-    if (!workDirectoryPaths.empty())
-        INSTALL_HOOK(FileAccessOpen);
+    if (workDirectoryPaths.empty())
+        return;
+
+    INSTALL_HOOK(FileAccessOpen);
+
+    LOG("Work:");
+    for (auto& workDirectoryPath : workDirectoryPaths)
+        LOG(" - %s", workDirectoryPath.c_str());
 }

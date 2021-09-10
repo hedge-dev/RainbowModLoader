@@ -1,6 +1,8 @@
 #include "SigScan.h"
 #include <Psapi.h>
 
+bool sigValid = true;
+
 MODULEINFO moduleInfo;
 
 const MODULEINFO& getModuleInfo()
@@ -42,6 +44,7 @@ void* sigScan(const char* signature, const char* mask)
     void* x() \
     { \
         if (!_##x) _##x = sigScan(signature, mask); \
+        if (!_##x) sigValid = false; \
         return _##x; \
     }
 

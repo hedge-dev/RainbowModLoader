@@ -21,33 +21,54 @@ void initCodeLoader()
 {
     processFilePaths(dllFilePaths, reverseLoadOrder);
 
-    std::vector<DllEvent*> postInitEvents;
-
-    for (auto& dllFilePath : dllFilePaths)
+    if (!dllFilePaths.empty())
     {
-        const HMODULE module = LoadLibraryW(dllFilePath.c_str());
+        LOG("DLL:")
 
-        if (!module)
-            continue;
+        std::vector<DllEvent*> postInitEvents;
 
-        const FARPROC initEvent = GetProcAddress(module, "Init");
+        for (auto& dllFilePath : dllFilePaths)
+        {
+            const HMODULE module = LoadLibraryW(dllFilePath.c_str());
 
-        if (initEvent)
-            ((DllEvent*)initEvent)();
+            if (!module)
+            {
+                LPWSTR buffer = nullptr;
 
-        const FARPROC postInitEvent = GetProcAddress(module, "PostInit");
+                const DWORD msgSize = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                    nullptr, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&buffer, 0, NULL);
 
-        if (postInitEvent)
-            postInitEvents.push_back((DllEvent*)postInitEvent);
+                const std::wstring msg = L"Failed to load \"" + dllFilePath + L"\"\n" + std::wstring(buffer, msgSize);
+                MessageBoxW(nullptr, msg.c_str(), L"Rainbow Mod Loader", MB_OK);
 
-        const FARPROC onFrameEvent = GetProcAddress(module, "OnFrame");
+                LocalFree(buffer);
 
-        if (onFrameEvent)
-            onFrameEvents.push_back((DllEvent*)onFrameEvent);
+                LOG(" - Failed to load \"%ls\"", dllFilePath.c_str())
+
+                continue;
+            }
+
+            LOG(" - %ls", dllFilePath.c_str())
+
+            const FARPROC initEvent = GetProcAddress(module, "Init");
+
+            if (initEvent)
+                ((DllEvent*)initEvent)();
+
+            const FARPROC postInitEvent = GetProcAddress(module, "PostInit");
+
+            if (postInitEvent)
+                postInitEvents.push_back((DllEvent*)postInitEvent);
+
+            const FARPROC onFrameEvent = GetProcAddress(module, "OnFrame");
+
+            if (onFrameEvent)
+                onFrameEvents.push_back((DllEvent*)onFrameEvent);
+        }
+
+        for (auto& dllEvent : postInitEvents)
+            dllEvent();
     }
-
-    for (auto& dllEvent : postInitEvents)
-        dllEvent();
 
     INSTALL_HOOK(Present);
 }
