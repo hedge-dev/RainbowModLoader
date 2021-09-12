@@ -4,15 +4,24 @@ inline void processDirectoryPaths(std::vector<std::string>& directoryPaths, cons
 {
     std::vector<std::string> newDirectoryPaths;
 
-    const std::filesystem::path currentPath = std::filesystem::current_path();
+    const std::filesystem::path currentPath = std::filesystem::current_path().lexically_normal();
 
     for (auto& directoryPath : directoryPaths)
     {
-        if (!std::filesystem::is_directory(directoryPath))
+        const std::filesystem::path path = std::filesystem::path(directoryPath).lexically_normal();
+
+        if (!std::filesystem::is_directory(path))
             continue;
 
-        const std::string relativePath = std::filesystem::relative(directoryPath, currentPath).u8string();
-        newDirectoryPaths.push_back(relativePath.size() < directoryPath.size() ? relativePath : directoryPath);
+        const std::string newDirectoryPath = path.u8string();
+        const std::string relativePath = std::filesystem::relative(path, currentPath).u8string();
+
+        std::string newPath = !relativePath.empty() && relativePath.size() < newDirectoryPath.size() ? relativePath : newDirectoryPath;
+
+        if (!newPath.empty() && (newPath.back() == '\\' || newPath.back() == '/'))
+            newPath.pop_back();
+
+        newDirectoryPaths.push_back(newPath);
     }
 
     if (reverse)
@@ -30,7 +39,7 @@ inline void processFilePaths(std::vector<std::wstring>& filePaths, const bool re
         if (!std::filesystem::is_regular_file(filePath))
             continue;
 
-        newFilePaths.push_back(std::filesystem::absolute(filePath).wstring());
+        newFilePaths.push_back(std::filesystem::absolute(filePath).lexically_normal().wstring());
     }
 
     if (reverse)

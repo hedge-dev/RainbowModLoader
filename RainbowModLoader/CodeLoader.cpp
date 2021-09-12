@@ -63,7 +63,7 @@ void initCodeLoader()
             {
                 std::wstring relativePath = std::filesystem::relative(dllFilePath, currentDirectory).wstring();
 
-                if (relativePath.size() > dllFilePath.size())
+                if (relativePath.empty() || relativePath.size() > dllFilePath.size())
                     relativePath = dllFilePath;
 
                 LOG(" - %ls", relativePath.c_str())

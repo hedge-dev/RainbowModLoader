@@ -54,7 +54,7 @@ void loadModsDatabase(const std::string& filePath)
     {
         std::string relativePath = std::filesystem::relative(filePath, std::filesystem::current_path()).string();
 
-        if (relativePath.size() > filePath.size())
+        if (relativePath.empty() || relativePath.size() > filePath.size())
             relativePath = filePath;
 
         if (modsDatabase.ParseError() != 0)
