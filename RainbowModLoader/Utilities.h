@@ -18,7 +18,9 @@ inline void processDirectoryPaths(std::vector<std::string>& directoryPaths, cons
 
         std::string newPath = !relativePath.empty() && relativePath.size() < newDirectoryPath.size() ? relativePath : newDirectoryPath;
 
-        if (!newPath.empty() && (newPath.back() == '\\' || newPath.back() == '/'))
+        std::replace(newPath.begin(), newPath.end(), '\\', '/');
+
+        if (!newPath.empty() && newPath.back() == '/')
             newPath.pop_back();
 
         newDirectoryPaths.push_back(newPath);
@@ -39,7 +41,10 @@ inline void processFilePaths(std::vector<std::wstring>& filePaths, const bool re
         if (!std::filesystem::is_regular_file(filePath))
             continue;
 
-        newFilePaths.push_back(std::filesystem::absolute(filePath).lexically_normal().wstring());
+        std::wstring newPath = std::filesystem::absolute(filePath).lexically_normal().wstring();
+        std::replace(newPath.begin(), newPath.end(), L'\\', L'/');
+
+        newFilePaths.push_back(newPath);
     }
 
     if (reverse)

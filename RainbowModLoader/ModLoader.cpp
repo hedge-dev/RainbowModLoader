@@ -11,13 +11,18 @@ void loadMod(const std::string& filePath)
 
     const INIReader mod(filePath);
 
-    if (mod.ParseError() != 0)
+    if (mod.ParseError() == -1)
     {
         LOG(" - Failed to load \"%s\"", filePath.c_str())
         return;
     }
 
-    LOG(" - %s", mod.GetString("Desc", "Title", std::string()).c_str())
+    const std::string title = mod.GetString("Desc", "Title", std::string());
+
+    if (mod.ParseError() != 0)
+        LOG(" - %s (error at line %d)", title.c_str(), mod.ParseError())
+    else
+        LOG(" - %s", title.c_str());
 
     const std::string directoryPath = getDirectoryPath(filePath);
 
@@ -57,6 +62,8 @@ void loadModsDatabase(const std::string& filePath)
         if (relativePath.empty() || relativePath.size() > filePath.size())
             relativePath = filePath;
 
+        std::replace(relativePath.begin(), relativePath.end(), '\\', '/');
+
         if (modsDatabase.ParseError() != 0)
             LOG("Failed to load \"%s\"", filePath.c_str())
 
@@ -75,7 +82,9 @@ void loadModsDatabase(const std::string& filePath)
         if (activeMod.empty())
             continue;
 
-        const std::string modFilePath = modsDatabase.GetString("Mods", activeMod, std::string());
+        std::string modFilePath = modsDatabase.GetString("Mods", activeMod, std::string());
+        std::replace(modFilePath.begin(), modFilePath.end(), '\\', '/');
+
         loadMod(modFilePath);
     }
 }

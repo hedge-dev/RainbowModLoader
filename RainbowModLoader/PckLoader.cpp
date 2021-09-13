@@ -9,12 +9,12 @@ HOOK(bool, __fastcall, LoadPckFiles, sigLoadPckFiles(), ProjectSettings* This, c
 {
     const bool result = originalLoadPckFiles(This, p_path);
 
-    LOG("PCK:")
+    LOG("PCK/ZIP:")
 
     for (auto& modDirectoryPath : modDirectoryPaths)
     {
         String path;
-        copyFrom(&path, modDirectoryPath.c_str());
+        copyFrom(&path, (modDirectoryPath + "/").c_str());
 
         if (originalLoadPckFiles(This, path))
             LOG(" - %s", modDirectoryPath.c_str())

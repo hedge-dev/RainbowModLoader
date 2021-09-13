@@ -66,6 +66,8 @@ void initCodeLoader()
                 if (relativePath.empty() || relativePath.size() > dllFilePath.size())
                     relativePath = dllFilePath;
 
+                std::replace(relativePath.begin(), relativePath.end(), '\\', '/');
+
                 LOG(" - %ls", relativePath.c_str())
             }
 
