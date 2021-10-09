@@ -35,7 +35,7 @@ HOOK(FileAccess*, __fastcall, FileAccessOpen, sigFileAccessOpen2(), const String
 
 void initWorkLoader()
 {
-    processDirectoryPaths(workDirectoryPaths, !reverseLoadOrder);
+    processDirectoryPaths(workDirectoryPaths, reverseLoadOrder);
 
     if (workDirectoryPaths.empty())
         return;

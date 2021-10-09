@@ -19,7 +19,7 @@ HOOK(HRESULT, __fastcall, Present, sigPresent(), void* This)
 
 void initCodeLoader()
 {
-    processFilePaths(dllFilePaths, reverseLoadOrder);
+    processFilePaths(dllFilePaths, !reverseLoadOrder);
 
     if (!dllFilePaths.empty())
     {

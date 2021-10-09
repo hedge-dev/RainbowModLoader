@@ -25,7 +25,7 @@ HOOK(bool, __fastcall, LoadPckFiles, sigLoadPckFiles(), ProjectSettings* This, c
 
 void initPckLoader()
 {
-    processDirectoryPaths(modDirectoryPaths, reverseLoadOrder);
+    processDirectoryPaths(modDirectoryPaths, !reverseLoadOrder);
 
     if (!modDirectoryPaths.empty())
         INSTALL_HOOK(LoadPckFiles);

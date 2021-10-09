@@ -71,7 +71,7 @@ void loadModsDatabase(const std::string& filePath)
             LOG("ModsDB: %s", relativePath.c_str())
     }
 
-    reverseLoadOrder = modsDatabase.GetBoolean("Main", "ReverseLoadOrder", true);
+    reverseLoadOrder = modsDatabase.GetBoolean("Main", "ReverseLoadOrder", false);
 
     const long activeModCount = modsDatabase.GetInteger("Main", "ActiveModCount", 0);
 

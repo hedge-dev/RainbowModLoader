@@ -46,7 +46,7 @@ HOOK(int, __fastcall, CriFsInitializeLibrary, sigCriFsInitializeLibrary(), void*
 
 void initCpkRedirector()
 {
-    processDirectoryPaths(cpkDirectoryPaths, reverseLoadOrder);
+    processDirectoryPaths(cpkDirectoryPaths, !reverseLoadOrder);
 
     if (cpkDirectoryPaths.empty())
         return;
